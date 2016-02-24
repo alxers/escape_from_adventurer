@@ -10,6 +10,10 @@ var map = [
     'Rescue boats'
 ];
 
+var blockedPathMessages = [
+    'There is nothing there, only space',
+];
+
 var mapLocation = 4;
 var playersInput = '';
 var gameMessage = '';
@@ -31,7 +35,7 @@ function playGame() {
     action = '';
 
     for(i = 0; i < knownActions.length; i++) {
-        if(playersInput.indexOf(knownActions[i]) !== -1) {
+        if (playersInput.indexOf(knownActions[i]) !== -1) {
             action = knownActions[i];
             console.log('players action: ' + action);
             break;
@@ -40,16 +44,32 @@ function playGame() {
 
     switch(action) {
         case 'north':
-            mapLocation -= 3;
+            if (mapLocation >= 3) {
+                mapLocation -= 3;
+            } else {
+                gameMessage = blockedPathMessages[0];
+            }
             break;
         case 'east':
-            mapLocation += 1;
+            if (mapLocation % 3 !== 2) {
+                mapLocation += 1;
+            } else {
+                gameMessage = blockedPathMessages[0];
+            }
             break;
         case 'south':
-            mapLocation += 3;
+            if (mapLocation < 6) {
+                mapLocation += 3;
+            } else {
+                gameMessage = blockedPathMessages[0];
+            }
             break;
         case 'west':
-            mapLocation -= 1;
+            if (mapLocation % 3 !== 0) {
+                mapLocation -= 1;
+            } else {
+                gameMessage = blockedPathMessages[0];
+            }
             break;
         default:
             gameMessage = 'Unknown input';
