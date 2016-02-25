@@ -14,6 +14,9 @@ var blockedPathMessages = [
     'There is nothing there, only space',
 ];
 
+var items = [];
+var itemLocations = [1, 6, 8];
+
 var mapLocation = 4;
 var playersInput = '';
 var gameMessage = '';
@@ -81,5 +84,16 @@ function playGame() {
 
 function render() {
     boardEl.innerHTML = map[mapLocation];
+
+    for (var i = 0; i < items.length; i++) {
+        if (mapLocation === itemLocations[i]) {
+            boardEl.innerHTML += '<br>You see a <strong>' + items[i] + '</strong> here.';
+        }
+    }
+
     boardEl.innerHTML += '<br>' + gameMessage;
+
+    if (backpack.length !== 0) {
+        boardEl.innerHTML += '<br>You are carrying: ' + backpack.join(', ');
+    }
 }
