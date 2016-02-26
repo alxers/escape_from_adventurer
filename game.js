@@ -17,11 +17,17 @@ var blockedPathMessages = [
 var items = [];
 var itemLocations = [1, 6, 8];
 
+var backpack = [];
+
 var mapLocation = 4;
 var playersInput = '';
 var gameMessage = '';
-var knownActions = ['north', 'east', 'south', 'west'];
+
+var knownActions = ['north', 'east', 'south', 'west', 'take', 'use', 'drop'];
 var action = '';
+
+var knownItems = [];
+var item = '';
 
 var boardEl = document.getElementById('board');
 var inputEl = document.getElementById('input');
