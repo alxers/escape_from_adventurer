@@ -14,7 +14,23 @@ var blockedPathMessages = [
     'There is nothing there, only space',
 ];
 
-var items = [];
+var items = [
+    'Breath Mask',
+    'Energy Shield',
+    'Strength Gauntlet',
+    'Combat Suit',
+    'Light Exoskeleton',
+    'Blaster Pistol',
+    'Ion Blaster',
+    'Sonic Grenade',
+    'Energy Cell',
+    'Medpac',
+    'Life Support Pack',
+    'Antidote Kit',
+    'Adrenal Strength Stimulant',
+    'Repair Kit'
+];
+
 var itemLocations = [1, 6, 8];
 
 var backpack = [];
@@ -26,7 +42,7 @@ var gameMessage = '';
 var knownActions = ['north', 'east', 'south', 'west', 'take', 'use', 'drop'];
 var action = '';
 
-var knownItems = [];
+// var knownItems = [];
 var item = '';
 
 var boardEl = document.getElementById('board');
@@ -79,6 +95,15 @@ function playGame() {
             } else {
                 gameMessage = blockedPathMessages[0];
             }
+            break;
+        case 'take':
+            takeItem();
+            break;
+        case 'drop':
+            dropItem();
+            break;
+        case 'use':
+            useItem();
             break;
         default:
             gameMessage = 'Unknown input';
