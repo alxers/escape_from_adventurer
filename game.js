@@ -33,6 +33,7 @@ var items = [
 
 var itemLocations = [1, 6, 8];
 
+// TODO: add function, that displays inventory
 var backpack = [];
 
 var mapLocation = 4;
@@ -50,6 +51,19 @@ var inputEl = document.getElementById('input');
 var enterBtnEl = document.getElementById('enterBtn')
 
 enterBtnEl.addEventListener('click', playGame, false);
+
+function takeItem() {
+    var itemIndex = items.indexOf(item);
+
+    if (itemIndex !== - 1 && itemLocations[itemIndex] === mapLocation) {
+        gameMessage = 'You take the ' + item;
+        backpack.push(item);
+        items.splice(itemIndex, 1);
+        itemLocations.splice(itemIndex, 1);
+    } else {
+        gameMessage = 'You cant do that';
+    }
+}
 
 render();
 
