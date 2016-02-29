@@ -65,6 +65,24 @@ function takeItem() {
     }
 }
 
+function dropItem() {
+    if (backpack.length !== 0) {
+        var backpackIndex = backpack.indexOf(item);
+
+        if (backpackIndex !== -1) {
+            gameMessage = 'You drop the ' + item;
+            items.push(backpack[backpackIndex]);
+            itemLocations.push(mapLocation);
+
+            backpack.splice(backpackIndex, 1);
+        } else {
+            gameMessage = 'You cant do that';
+        }
+    } else {
+        gameMessage = 'You are not carrying anything';
+    }
+}
+
 render();
 
 function playGame() {
