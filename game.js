@@ -83,6 +83,18 @@ function dropItem() {
     }
 }
 
+function useTime() {
+    var backpackIndex = backpack.indexOf(item);
+
+    if (backpackIndex === -1) {
+        gameMessage = 'You are not carrying it';
+    }
+
+    if (backpack.length === 0) {
+        gameMessage += ' Your backpack is empty';
+    }
+}
+
 render();
 
 function playGame() {
