@@ -52,6 +52,14 @@ var enterBtnEl = document.getElementById('enterBtn')
 
 enterBtnEl.addEventListener('click', playGame, false);
 
+function showInventory() {
+    if (backpack.length) {
+        gameMessage = 'You have ' + backpack.join(', ') + ' in your inventory';
+    } else {
+        gameMessage = 'Nothing in there';
+    }
+}
+
 function takeItem() {
     var itemIndex = items.indexOf(item);
 
@@ -92,6 +100,12 @@ function useTime() {
 
     if (backpack.length === 0) {
         gameMessage += ' Your backpack is empty';
+    }
+
+    if (backpackIndex !== -1) {
+        switch(item) {
+            case 
+        }
     }
 }
 
@@ -148,6 +162,9 @@ function playGame() {
             break;
         case 'use':
             useItem();
+            break;
+        case 'show':
+            showInventory();
             break;
         default:
             gameMessage = 'Unknown input';
