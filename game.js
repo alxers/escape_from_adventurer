@@ -33,7 +33,6 @@ var items = [
 
 var itemLocations = [1, 6, 8];
 
-// TODO: add function, that displays inventory
 var backpack = [];
 
 var mapLocation = 4;
@@ -91,6 +90,8 @@ function dropItem() {
     }
 }
 
+// TODO: get rid of magic numbers
+// add real items
 function useTime() {
     var backpackIndex = backpack.indexOf(item);
 
@@ -104,7 +105,14 @@ function useTime() {
 
     if (backpackIndex !== -1) {
         switch(item) {
-            case 
+            case 'item1':
+                gameMessage = '';
+                break;
+            // Item can be on the 'right' location, otherwise it's useless
+            case 'item2':
+                if (mapLocation === 3) {
+                    gameMessage = '';
+                }
         }
     }
 }
@@ -166,6 +174,7 @@ function playGame() {
         case 'show':
             showInventory();
             break;
+        // TODO: add 'help' command, which shows all the possible actions
         default:
             gameMessage = 'Unknown input';
     }
