@@ -39,7 +39,18 @@ var mapLocation = 4;
 var playersInput = '';
 var gameMessage = '';
 
-var knownActions = ['north', 'east', 'south', 'west', 'take', 'use', 'drop'];
+var knownActions = [
+    'north',
+    'east',
+    'south',
+    'west',
+    'take',
+    'use',
+    'drop',
+    'help',
+    'inventory',
+    'backpack'
+    ];
 var action = '';
 
 // var knownItems = [];
@@ -117,6 +128,10 @@ function useTime() {
     }
 }
 
+function showHelpMessage() {
+    gameMessage = 'You can type in: ' + knownActions.join(', ');
+}
+
 render();
 
 function playGame() {
@@ -171,7 +186,13 @@ function playGame() {
         case 'use':
             useItem();
             break;
-        case 'show':
+        case 'help':
+            showHelpMessage();
+            break;
+        case 'inventory':
+            showInventory();
+            break;
+        case 'backpack':
             showInventory();
             break;
         // TODO: add 'help' command, which shows all the possible actions
