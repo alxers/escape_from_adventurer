@@ -1,3 +1,5 @@
+'use strict'
+
 var map = [
     'Fire control station',
     'Captains room',
@@ -15,23 +17,44 @@ var blockedPathMessages = [
 ];
 
 var items = [
-    'Breath Mask',
-    'Energy Shield',
-    'Strength Gauntlet',
-    'Combat Suit',
-    'Light Exoskeleton',
-    'Blaster Pistol',
-    'Ion Blaster',
-    'Sonic Grenade',
-    'Energy Cell',
-    'Medpac',
-    'Life Support Pack',
-    'Antidote Kit',
-    'Adrenal Strength Stimulant',
-    'Repair Kit'
+    'energy cell',
+    'access key',
+    'repair kit',
+    'breath mask',
+    null,
+    null, // 'Vaccine',
+    null, // 'Explosion',
+    null,
+    null
+   // 'Energy Shield',
+   // 'Strength Gauntlet',
+   // 'Combat Suit',
+   // 'Light Exoskeleton',
+   // 'Blaster Pistol',
+   // 'Ion Blaster',
+   // 'Sonic Grenade',
+   // 'Energy Cell',
+   // 'Medpac',
+   // 'Life Support Pack',
+   // 'Antidote Kit',
+   // 'Adrenal Strength Stimulant',
+   // 'Repair Kit'
 ];
 
-var itemLocations = [1, 6, 8];
+// Get rid of the same array (require changing the for loop in the playGame function
+var knownItems = [
+    'energy cell',
+    'access key',
+    'repair kit',
+    'breath mask',
+    null,
+    null, // 'Vaccine',
+    null, // 'Explosion',
+    null,
+    null
+    ];
+
+var itemLocations = [0, 1, 2, 3]; // 5, 6
 
 var backpack = [];
 
@@ -79,7 +102,7 @@ function takeItem() {
         items.splice(itemIndex, 1);
         itemLocations.splice(itemIndex, 1);
     } else {
-        gameMessage = 'You cant do that';
+        gameMessage = 'Unknown input';
     }
 }
 
@@ -103,7 +126,7 @@ function dropItem() {
 
 // TODO: get rid of magic numbers
 // add real items
-function useTime() {
+function useItem() {
     var backpackIndex = backpack.indexOf(item);
 
     if (backpackIndex === -1) {
@@ -140,7 +163,7 @@ function playGame() {
     gameMessage = '';
     action = '';
 
-    for(i = 0; i < knownActions.length; i++) {
+    for (let i = 0; i < knownActions.length; i++) {
         if (playersInput.indexOf(knownActions[i]) !== -1) {
             action = knownActions[i];
             console.log('players action: ' + action);
@@ -148,7 +171,13 @@ function playGame() {
         }
     }
 
-    switch(action) {
+    for (let i = 0; i < knownItems.length; i++) {
+      if (playersInput.indexOf(knownItems[i]) !== -1) {
+        item = knownItems[i];
+      }
+    }
+
+    switch (action) {
         case 'north':
             if (mapLocation >= 3) {
                 mapLocation -= 3;
@@ -195,7 +224,6 @@ function playGame() {
         case 'backpack':
             showInventory();
             break;
-        // TODO: add 'help' command, which shows all the possible actions
         default:
             gameMessage = 'Unknown input';
     }
@@ -207,7 +235,7 @@ function playGame() {
 function render() {
     boardEl.innerHTML = map[mapLocation];
 
-    for (var i = 0; i < items.length; i++) {
+    for (let i = 0; i < items.length; i++) {
         if (mapLocation === itemLocations[i]) {
             boardEl.innerHTML += '<br>You see a <strong>' + items[i] + '</strong> here.';
         }
