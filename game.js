@@ -68,6 +68,7 @@ var knownActions = [
     'south',
     'west',
     'take',
+    'use rescue boat',
     'use',
     'drop',
     'help',
@@ -151,6 +152,14 @@ function useItem() {
     }
 }
 
+function gameComplete() {
+    if (mapLocation === 8) {
+        gameMessage = 'You successfully escaped in the resque boat';
+    } else {
+        gameMessage = 'You cant do that';
+    }
+}
+
 function showHelpMessage() {
     gameMessage = 'You can type in: ' + knownActions.join(', ');
 }
@@ -166,6 +175,9 @@ function playGame() {
     for (let i = 0; i < knownActions.length; i++) {
         if (playersInput.indexOf(knownActions[i]) !== -1) {
             action = knownActions[i];
+            if (playersInput === knownActions[i]) {
+                action = knownActions[i];
+            }
             console.log('players action: ' + action);
             break;
         }
@@ -211,6 +223,9 @@ function playGame() {
             break;
         case 'drop':
             dropItem();
+            break;
+        case 'use rescue boat':
+            gameComplete();
             break;
         case 'use':
             useItem();
