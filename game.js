@@ -13,7 +13,7 @@ var map = [
 ];
 
 var blockedPathMessages = [
-    'There is nothing there, only space',
+    'There is nothing there, only space'
 ];
 
 var items = [
@@ -41,6 +41,9 @@ var items = [
    // 'Repair Kit'
 ];
 
+var energyCellInstalled = false;
+var boatRepaired = false;
+
 // Get rid of the same array (require changing the for loop in the playGame function
 var knownItems = [
     'energy cell',
@@ -56,24 +59,23 @@ var knownItems = [
 
 var itemLocations = [0, 1, 2, 3]; // 5, 6
 
-var backpack = [];
+var inventory = [];
 
 var mapLocation = 4;
 var playersInput = '';
 var gameMessage = '';
 
 var knownActions = [
-    'north',
-    'east',
-    'south',
-    'west',
+    'forward',
+    'right',
+    'back',
+    'left',
     'take',
     'use rescue boat',
     'use',
     'drop',
     'help',
-    'inventory',
-    'backpack'
+    'inventory'
     ];
 var action = '';
 
@@ -87,8 +89,8 @@ var enterBtnEl = document.getElementById('enterBtn')
 enterBtnEl.addEventListener('click', playGame, false);
 
 function showInventory() {
-    if (backpack.length) {
-        gameMessage = 'You have ' + backpack.join(', ') + ' in your inventory';
+    if (inventory.length) {
+        gameMessage = 'You have ' + inventory.join(', ') + ' in your inventory';
     } else {
         gameMessage = 'Nothing in there';
     }
@@ -99,7 +101,7 @@ function takeItem() {
 
     if (itemIndex !== - 1 && itemLocations[itemIndex] === mapLocation) {
         gameMessage = 'You take the ' + item;
-        backpack.push(item);
+        inventory.push(item);
         items.splice(itemIndex, 1);
         itemLocations.splice(itemIndex, 1);
     } else {
@@ -108,15 +110,15 @@ function takeItem() {
 }
 
 function dropItem() {
-    if (backpack.length !== 0) {
-        var backpackIndex = backpack.indexOf(item);
+    if (inventory.length !== 0) {
+        var inventoryIndex = inventory.indexOf(item);
 
-        if (backpackIndex !== -1) {
+        if (inventoryIndex !== -1) {
             gameMessage = 'You drop the ' + item;
-            items.push(backpack[backpackIndex]);
+            items.push(inventory[inventoryIndex]);
             itemLocations.push(mapLocation);
 
-            backpack.splice(backpackIndex, 1);
+            inventory.splice(inventoryIndex, 1);
         } else {
             gameMessage = 'You cant do that';
         }
@@ -128,32 +130,44 @@ function dropItem() {
 // TODO: get rid of magic numbers
 // add real items
 function useItem() {
-    var backpackIndex = backpack.indexOf(item);
+    var inventoryIndex = inventory.indexOf(item);
 
-    if (backpackIndex === -1) {
+    if (inventoryIndex === -1) {
         gameMessage = 'You are not carrying it';
     }
 
-    if (backpack.length === 0) {
-        gameMessage += ' Your backpack is empty';
+    if (inventory.length === 0) {
+        gameMessage += ' Your inventory is empty';
     }
 
-    if (backpackIndex !== -1) {
+    if (inventoryIndex !== -1) {
         switch(item) {
-            case 'item1':
-                gameMessage = '';
-                break;
-            // Item can be on the 'right' location, otherwise it's useless
-            case 'item2':
-                if (mapLocation === 3) {
-                    gameMessage = '';
+            case 'energy cell':
+                if (mapLocation === 8) {
+                    energyCellInstalled = true;
+                    gameMessage = 'You\'ve installed energy cell';
+                    inventory.splice(inventoryIndex, 1);
+                } else {
+                    gameMessage = 'It\'s no use in here';
                 }
+                break;
+            case 'repair kit':
+                if (mapLocation === 8) {
+                    boatRepaired = true;
+                    gameMessage = 'You\'ve repaired the boat';
+                    inventory.splice(inventoryIndex, 1);
+                } else {
+                    gameMessage = 'It\'s no use in here';
+                }
+                break;
+            default:
+                gameMessage = 'Unknown input';
         }
     }
 }
 
 function gameComplete() {
-    if (mapLocation === 8) {
+    if ((mapLocation === 8) && energyCellInstalled && boatRepaired) {
         gameMessage = 'You successfully escaped in the resque boat';
     } else {
         gameMessage = 'You cant do that';
@@ -190,28 +204,28 @@ function playGame() {
     }
 
     switch (action) {
-        case 'north':
+        case 'forward':
             if (mapLocation >= 3) {
                 mapLocation -= 3;
             } else {
                 gameMessage = blockedPathMessages[0];
             }
             break;
-        case 'east':
+        case 'right':
             if (mapLocation % 3 !== 2) {
                 mapLocation += 1;
             } else {
                 gameMessage = blockedPathMessages[0];
             }
             break;
-        case 'south':
+        case 'back':
             if (mapLocation < 6) {
                 mapLocation += 3;
             } else {
                 gameMessage = blockedPathMessages[0];
             }
             break;
-        case 'west':
+        case 'left':
             if (mapLocation % 3 !== 0) {
                 mapLocation -= 1;
             } else {
@@ -236,9 +250,6 @@ function playGame() {
         case 'inventory':
             showInventory();
             break;
-        case 'backpack':
-            showInventory();
-            break;
         default:
             gameMessage = 'Unknown input';
     }
@@ -258,7 +269,7 @@ function render() {
 
     boardEl.innerHTML += '<br>' + gameMessage;
 
-    if (backpack.length !== 0) {
-        boardEl.innerHTML += '<br>You are carrying: ' + backpack.join(', ');
+    if (inventory.length !== 0) {
+        boardEl.innerHTML += '<br>You are carrying: ' + inventory.join(', ');
     }
 }
