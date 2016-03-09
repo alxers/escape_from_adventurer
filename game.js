@@ -87,6 +87,7 @@ var inputEl = document.getElementById('input');
 var enterBtnEl = document.getElementById('enterBtn')
 
 enterBtnEl.addEventListener('click', playGame, false);
+inputEl.addEventListener('keydown', function(e){ if (e.keyCode === 13){ playGame() }}, false);
 
 function showInventory() {
     if (inventory.length) {
@@ -261,6 +262,7 @@ function playGame() {
 function render() {
     boardEl.innerHTML = map[mapLocation];
 
+    // TODO: fix "You see a 'null' here if I drop an item"
     for (let i = 0; i < items.length; i++) {
         if (mapLocation === itemLocations[i]) {
             boardEl.innerHTML += '<br>You see a <strong>' + items[i] + '</strong> here.';
