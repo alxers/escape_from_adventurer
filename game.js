@@ -16,6 +16,10 @@ var blockedPathMessages = [
     'There is nothing there, only space'
 ];
 
+// TODO: Thoughts, add characters that player can talk to (as an item),
+// use 'talk' action to interact.
+
+// Add 'map', so player always sees the current location
 var items = [
     'energy cell',
     'access key',
