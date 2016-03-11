@@ -83,7 +83,6 @@ var knownActions = [
     ];
 var action = '';
 
-// var knownItems = [];
 var item = '';
 
 var boardEl = document.getElementById('board');
