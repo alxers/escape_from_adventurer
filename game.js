@@ -277,4 +277,6 @@ function render() {
     if (inventory.length !== 0) {
         boardEl.innerHTML += '<br>You are carrying: ' + inventory.join(', ');
     }
+
+    inputEl.value = '';
 }
