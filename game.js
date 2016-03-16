@@ -12,6 +12,17 @@ var map = [
     'Rescue boats'
 ];
 
+var images = [
+    null,
+    null,
+    null,
+    null,
+    'main_bridge.png',
+    null,
+    null,
+    null
+];
+
 var blockedPathMessages = [
     'There is nothing there, only space'
 ];
@@ -20,9 +31,10 @@ var blockedPathMessages = [
 // use 'talk' action to interact.
 
 // Add 'map', so player always sees the current location
+// TODO: fix 'you see a null here'
 var items = [
     'energy cell',
-    'access key',
+    null, // 'access key'
     'repair kit',
     'breath mask',
     null,
@@ -51,7 +63,7 @@ var boatRepaired = false;
 // Get rid of the same array (require changing the for loop in the playGame function
 var knownItems = [
     'energy cell',
-    'access key',
+    null,
     'repair kit',
     'breath mask',
     null,
@@ -87,7 +99,8 @@ var item = '';
 
 var boardEl = document.getElementById('board');
 var inputEl = document.getElementById('input');
-var enterBtnEl = document.getElementById('enterBtn')
+var enterBtnEl = document.getElementById('enterBtn');
+var imgEl = document.getElementById('ship-image');
 
 enterBtnEl.addEventListener('click', playGame, false);
 inputEl.addEventListener('keydown', function(e){ if (e.keyCode === 13){ playGame() }}, false);
@@ -264,6 +277,7 @@ function playGame() {
 
 function render() {
     boardEl.innerHTML = map[mapLocation];
+    imgEl.src = './images/' + images[mapLocation];
 
     // TODO: fix "You see a 'null' here if I drop an item"
     for (let i = 0; i < items.length; i++) {
