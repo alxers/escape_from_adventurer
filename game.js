@@ -13,7 +13,7 @@ var map = [
 ];
 
 var images = [
-    null,
+    'fire_control_station.png',
     null,
     null,
     null,
