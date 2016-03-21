@@ -87,8 +87,8 @@ class Game {
         this.enterBtnEl = document.getElementById('enterBtn');
         this.imgEl = document.getElementById('ship-image');
 
-        this.enterBtnEl.addEventListener('click', playGame, false);
-        this.inputEl.addEventListener('keydown', function(e){ if (e.keyCode === 13){ playGame() }}, false);
+        this.enterBtnEl.addEventListener('click', this.playGame, false);
+        this.inputEl.addEventListener('keydown', function(e){ if (e.keyCode === 13){ this.playGame() }}, false);
 
     }
 
@@ -183,7 +183,25 @@ class Game {
         gameMessage = 'You can type in: ' + knownActions.join(', ');
     }
 
-    render();
+    render() {
+        boardEl.innerHTML = map[mapLocation];
+        imgEl.src = './images/' + images[mapLocation];
+
+        // TODO: fix "You see a 'null' here if I drop an item"
+        for (let i = 0; i < items.length; i++) {
+            if (mapLocation === itemLocations[i]) {
+                boardEl.innerHTML += '<br>You see a <strong>' + items[i] + '</strong> here.';
+            }
+        }
+
+        boardEl.innerHTML += '<br>' + gameMessage;
+
+        if (inventory.length !== 0) {
+            boardEl.innerHTML += '<br>You are carrying: ' + inventory.join(', ');
+        }
+
+        inputEl.value = '';
+    }
 
     playGame() {
         playersInput = inputEl.value.toLowerCase();
@@ -259,28 +277,7 @@ class Game {
                 gameMessage = 'Unknown input';
         }
 
-        render();
-
-    }
-
-    render() {
-        boardEl.innerHTML = map[mapLocation];
-        imgEl.src = './images/' + images[mapLocation];
-
-        // TODO: fix "You see a 'null' here if I drop an item"
-        for (let i = 0; i < items.length; i++) {
-            if (mapLocation === itemLocations[i]) {
-                boardEl.innerHTML += '<br>You see a <strong>' + items[i] + '</strong> here.';
-            }
-        }
-
-        boardEl.innerHTML += '<br>' + gameMessage;
-
-        if (inventory.length !== 0) {
-            boardEl.innerHTML += '<br>You are carrying: ' + inventory.join(', ');
-        }
-
-        inputEl.value = '';
+        // render()
     }
 
 }
