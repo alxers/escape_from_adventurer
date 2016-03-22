@@ -93,19 +93,19 @@ class Game {
     }
 
     showInventory() {
-        if (inventory.length) {
-            gameMessage = 'You have ' + inventory.join(', ') + ' in your inventory';
+        if (this.inventory.length) {
+            this.gameMessage = 'You have ' + this.inventory.join(', ') + ' in your inventory';
         } else {
-            gameMessage = 'Nothing in there';
+            this.gameMessage = 'Nothing in there';
         }
     }
 
     takeItem() {
-        let itemIndex = items.indexOf(item);
+        let itemIndex = this.items.indexOf(this.item);
 
-        if (itemIndex !== - 1 && itemLocations[itemIndex] === mapLocation) {
-            gameMessage = 'You take the ' + item;
-            inventory.push(item);
+        if (itemIndex !== - 1 && this.itemLocations[itemIndex] === this.mapLocation) {
+            this.gameMessage = 'You take the ' + this.item;
+            this.inventory.push(item);
             items.splice(itemIndex, 1);
             itemLocations.splice(itemIndex, 1);
         } else {
@@ -209,13 +209,13 @@ class Game {
         gameMessage = '';
         action = '';
 
-        for (let i = 0; i < knownActions.length; i++) {
-            if (playersInput.indexOf(knownActions[i]) !== -1) {
-                action = knownActions[i];
-                if (playersInput === knownActions[i]) {
-                    action = knownActions[i];
+        for (let i = 0; i < this.knownActions.length; i++) {
+            if (this.playersInput.indexOf(this.knownActions[i]) !== -1) {
+                this.action = this.knownActions[i];
+                if (this.playersInput === this.knownActions[i]) {
+                    this.action = this.knownActions[i];
                 }
-                console.log('players action: ' + action);
+                console.log('players action: ' + this.action);
                 break;
             }
         }
