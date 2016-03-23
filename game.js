@@ -7,9 +7,9 @@ class Utils {
 }
 
 class Location {
-    constructor(name, image, items) {
+    constructor(name, items) {
         this.name = name;
-        this.image = image;
+        this.image = Utils.toSnakeCase(name);
         this.items = items;
     }
 }
@@ -47,7 +47,7 @@ class Game {
 
         this.map = this.locationItems.map(function(locItem) {
             let loc = Object.keys(locItem)[0];
-            return new Location(loc, Utils.toSnakeCase(loc), locItem[loc])
+            return new Location(loc, locItem[loc])
         });
 
         this.knownActions = [
