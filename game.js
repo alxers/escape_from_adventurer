@@ -9,7 +9,7 @@ class Utils {
 class Location {
     constructor(name, items) {
         this.name = name;
-        this.image = Utils.toSnakeCase(name);
+        this.image = Utils.toSnakeCase(name) + '.png';
         this.items = items;
     }
 }
