@@ -9,8 +9,8 @@ class Utils {
 class Location {
     constructor(name, items) {
         this.name = name;
-        this.image = Utils.toSnakeCase(name) + '.png';
-        this.items = items;
+        this.image = './images/' + Utils.toSnakeCase(name) + '.png';
+        this.items = items || [];
     }
 }
 
@@ -63,7 +63,7 @@ class Game {
             'inventory'
         ];
 
-        this.action = '';
+        // this.action = '';
         this.item = '';
 
         this.inventory = [];
@@ -76,7 +76,7 @@ class Game {
         this.boatRepaired = false;
 
         this.mapLocation = 4;
-        this.playersInput = '';
+        // this.playersInput = '';
         this.gameMessage = '';
 
         // Do I need this?
@@ -87,7 +87,7 @@ class Game {
         this.enterBtnEl = document.getElementById('enterBtn');
         this.imgEl = document.getElementById('ship-image');
 
-        this.enterBtnEl.addEventListener('click', this.playGame, false);
+        this.enterBtnEl.addEventListener('click', evt => this.playGame(evt), false);
         this.inputEl.addEventListener('keydown', function(e){ if (e.keyCode === 13){ this.playGame() }}, false);
 
     }
@@ -101,16 +101,26 @@ class Game {
     }
 
     takeItem() {
-        let itemIndex = this.items.indexOf(this.item);
+        let itemIndex = this.map[this.mapLocation].items.indexOf(this.item);
 
-        if (itemIndex !== - 1 && this.itemLocations[itemIndex] === this.mapLocation) {
+        if (itemIndex !== -1) {
             this.gameMessage = 'You take the ' + this.item;
-            this.inventory.push(item);
-            items.splice(itemIndex, 1);
-            itemLocations.splice(itemIndex, 1);
+            this.inventory.push(this.item);
+            this.map[this.mapLocation].items.splice(itemIndex, 1);
         } else {
-            gameMessage = 'Unknown input';
+            this.gameMessage = 'Unknown input';
         }
+
+        // let itemIndex = this.items.indexOf(this.item);
+
+        // if (itemIndex !== - 1 && this.itemLocations[itemIndex] === this.mapLocation) {
+        //     this.gameMessage = 'You take the ' + this.item;
+        //     this.inventory.push(item);
+        //     items.splice(itemIndex, 1);
+        //     itemLocations.splice(itemIndex, 1);
+        // } else {
+        //     gameMessage = 'Unknown input';
+        // }
     }
 
     dropItem() {
@@ -180,104 +190,112 @@ class Game {
 
     // Move to Utils?
     showHelpMessage() {
-        gameMessage = 'You can type in: ' + knownActions.join(', ');
+        this.gameMessage = 'You can type in: ' + this.knownActions.join(', ');
     }
 
     render() {
-        boardEl.innerHTML = map[mapLocation];
-        imgEl.src = './images/' + images[mapLocation];
+        this.boardEl.innerHTML = this.map[this.mapLocation].name;
+        this.imgEl.src = this.map[this.mapLocation].image;
+
+        if (this.map[this.mapLocation].items) {
+            this.boardEl.innerHTML += '<br>You see a <strong>' + this.map[this.mapLocation].items.join(', ') + '</strong> here.';
+        }
 
         // TODO: fix "You see a 'null' here if I drop an item"
-        for (let i = 0; i < items.length; i++) {
-            if (mapLocation === itemLocations[i]) {
-                boardEl.innerHTML += '<br>You see a <strong>' + items[i] + '</strong> here.';
-            }
+        // for (let i = 0; i < items.length; i++) {
+        //     if (mapLocation === itemLocations[i]) {
+        //         boardEl.innerHTML += '<br>You see a <strong>' + items[i] + '</strong> here.';
+        //     }
+        // }
+
+        this.boardEl.innerHTML += '<br>' + this.gameMessage;
+
+        if (this.inventory.length !== 0) {
+            this.boardEl.innerHTML += '<br>You are carrying: ' + inventory.join(', ');
         }
 
-        boardEl.innerHTML += '<br>' + gameMessage;
-
-        if (inventory.length !== 0) {
-            boardEl.innerHTML += '<br>You are carrying: ' + inventory.join(', ');
-        }
-
-        inputEl.value = '';
+        this.inputEl.value = '';
     }
 
     playGame() {
-        playersInput = inputEl.value.toLowerCase();
+        let playersInput = this.inputEl.value.toLowerCase();
 
-        gameMessage = '';
-        action = '';
+        let gameMessage = '';
+        let action = '';
 
         for (let i = 0; i < this.knownActions.length; i++) {
-            if (this.playersInput.indexOf(this.knownActions[i]) !== -1) {
-                this.action = this.knownActions[i];
-                if (this.playersInput === this.knownActions[i]) {
-                    this.action = this.knownActions[i];
+            if (playersInput.indexOf(this.knownActions[i]) !== -1) {
+                action = this.knownActions[i];
+                if (playersInput === this.knownActions[i]) {
+                    action = this.knownActions[i];
                 }
                 console.log('players action: ' + this.action);
                 break;
             }
         }
 
+        let knownItems = this.inventory.concat(this.map[this.mapLocation].items);
+
         for (let i = 0; i < knownItems.length; i++) {
           if (playersInput.indexOf(knownItems[i]) !== -1) {
-            item = knownItems[i];
+            this.item = knownItems[i];
           }
         }
 
         switch (action) {
             case 'forward':
-                if (mapLocation >= 3) {
-                    mapLocation -= 3;
+                if (this.mapLocation >= 3) {
+                    this.mapLocation -= 3;
                 } else {
                     gameMessage = blockedPathMessages[0];
                 }
                 break;
             case 'right':
-                if (mapLocation % 3 !== 2) {
-                    mapLocation += 1;
+                if (this.mapLocation % 3 !== 2) {
+                    this.mapLocation += 1;
                 } else {
                     gameMessage = blockedPathMessages[0];
                 }
                 break;
             case 'back':
-                if (mapLocation < 6) {
-                    mapLocation += 3;
+                if (this.mapLocation < 6) {
+                    this.mapLocation += 3;
                 } else {
                     gameMessage = blockedPathMessages[0];
                 }
                 break;
             case 'left':
-                if (mapLocation % 3 !== 0) {
-                    mapLocation -= 1;
+                if (this.mapLocation % 3 !== 0) {
+                    this.mapLocation -= 1;
                 } else {
                     gameMessage = blockedPathMessages[0];
                 }
                 break;
             case 'take':
-                takeItem();
+                this.takeItem();
                 break;
             case 'drop':
-                dropItem();
+                this.dropItem();
                 break;
             case 'use rescue boat':
-                gameComplete();
+                this.gameComplete();
                 break;
             case 'use':
-                useItem();
+                this.useItem();
                 break;
             case 'help':
-                showHelpMessage();
+                this.showHelpMessage();
                 break;
             case 'inventory':
-                showInventory();
+                this.showInventory();
                 break;
             default:
                 gameMessage = 'Unknown input';
         }
 
-        // render()
+        this.render();
     }
 
 }
+
+new Game().render();
