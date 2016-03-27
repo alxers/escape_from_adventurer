@@ -10,7 +10,7 @@ class Location {
     constructor(name, items) {
         this.name = name;
         this.image = './images/' + Utils.toSnakeCase(name) + '.png';
-        this.items = items || [];
+        this.items = items;
     }
 }
 
@@ -34,14 +34,14 @@ class Game {
         // 'Repair Kit'
         this.locationItems = [
             { 'Fire control station': ['energy cell'] },
-            { 'Captains room': null },
+            { 'Captains room': [] },
             { 'Maintanance station': ['repair kit'] },
             { 'Ship crew quarters': ['breath mask'] },
-            { 'Main bridge': null },
-            { 'Sick bay': null },
-            { 'Cargo bay': null },
-            { 'Drive shaft': null },
-            { 'Rescue boats': null }
+            { 'Main bridge': [] },
+            { 'Sick bay': [] },
+            { 'Cargo bay': [] },
+            { 'Drive shaft': [] },
+            { 'Rescue boats': [] }
 
         ];
 
@@ -63,12 +63,8 @@ class Game {
             'inventory'
         ];
 
-        // this.action = '';
         this.item = '';
-
         this.inventory = [];
-        this.currentPosition = 0;
-
         this.blockedPathMessages = ['There is nothing there, only space'];
 
         // Quest stuff
@@ -76,19 +72,16 @@ class Game {
         this.boatRepaired = false;
 
         this.mapLocation = 4;
-        // this.playersInput = '';
         this.gameMessage = '';
-
-        // Do I need this?
-        // this.itemLocations = [0, 1, 2, 3]; // 5, 6
 
         this.boardEl = document.getElementById('board');
         this.inputEl = document.getElementById('input');
         this.enterBtnEl = document.getElementById('enterBtn');
         this.imgEl = document.getElementById('ship-image');
 
-        this.enterBtnEl.addEventListener('click', evt => this.playGame(evt), false);
-        this.inputEl.addEventListener('keydown', function(e){ if (e.keyCode === 13){ this.playGame() }}, false);
+        // Arrow function to pass correct 'this'
+        this.enterBtnEl.addEventListener('click', e => this.playGame(), false);
+        this.inputEl.addEventListener('keydown', e => { if (e.keyCode === 13){ this.playGame() }}, false);
 
     }
 
@@ -108,83 +101,70 @@ class Game {
             this.inventory.push(this.item);
             this.map[this.mapLocation].items.splice(itemIndex, 1);
         } else {
-            this.gameMessage = 'Unknown input';
+            this.gameMessage = 'You can\'t do that';
         }
-
-        // let itemIndex = this.items.indexOf(this.item);
-
-        // if (itemIndex !== - 1 && this.itemLocations[itemIndex] === this.mapLocation) {
-        //     this.gameMessage = 'You take the ' + this.item;
-        //     this.inventory.push(item);
-        //     items.splice(itemIndex, 1);
-        //     itemLocations.splice(itemIndex, 1);
-        // } else {
-        //     gameMessage = 'Unknown input';
-        // }
     }
 
     dropItem() {
-        if (inventory.length !== 0) {
-            var inventoryIndex = inventory.indexOf(item);
+        if (this.inventory.length !== 0) {
+            let inventoryIndex = this.inventory.indexOf(this.item);
 
             if (inventoryIndex !== -1) {
-                gameMessage = 'You drop the ' + item;
-                items.push(inventory[inventoryIndex]);
-                itemLocations.push(mapLocation);
-
-                inventory.splice(inventoryIndex, 1);
+                this.gameMessage = 'You drop the ' + this.item;
+                this.map[this.mapLocation].items.push(this.inventory[inventoryIndex]);
+                this.inventory.splice(inventoryIndex, 1);
             } else {
-                gameMessage = 'You cant do that';
+                this.gameMessage = 'You cant do that';
             }
         } else {
-            gameMessage = 'You are not carrying anything';
+            this.gameMessage = 'You are not carrying anything';
         }
     }
 
     // TODO: get rid of magic numbers
     // add real items
     useItem() {
-        var inventoryIndex = inventory.indexOf(item);
+        let inventoryIndex = this.inventory.indexOf(this.item);
 
         if (inventoryIndex === -1) {
-            gameMessage = 'You are not carrying it';
+            this.gameMessage = 'You are not carrying it';
         }
 
-        if (inventory.length === 0) {
-            gameMessage += ' Your inventory is empty';
+        if (this.inventory.length === 0) {
+            this.gameMessage += ' Your inventory is empty';
         }
 
         if (inventoryIndex !== -1) {
-            switch(item) {
+            switch(this.item) {
                 case 'energy cell':
-                    if (mapLocation === 8) {
-                        energyCellInstalled = true;
-                        gameMessage = 'You\'ve installed energy cell';
-                        inventory.splice(inventoryIndex, 1);
+                    if (this.mapLocation === 8) {
+                        this.energyCellInstalled = true;
+                        this.gameMessage = 'You\'ve installed energy cell';
+                        this.inventory.splice(inventoryIndex, 1);
                     } else {
-                        gameMessage = 'It\'s no use in here';
+                        this.gameMessage = 'It\'s no use in here';
                     }
                     break;
                 case 'repair kit':
-                    if (mapLocation === 8) {
-                        boatRepaired = true;
-                        gameMessage = 'You\'ve repaired the boat';
-                        inventory.splice(inventoryIndex, 1);
+                    if (this.mapLocation === 8) {
+                        this.boatRepaired = true;
+                        this.gameMessage = 'You\'ve repaired the boat';
+                        this.inventory.splice(inventoryIndex, 1);
                     } else {
-                        gameMessage = 'It\'s no use in here';
+                        this.gameMessage = 'It\'s no use in here';
                     }
                     break;
                 default:
-                    gameMessage = 'Unknown input';
+                    this.gameMessage = 'Unknown input';
             }
         }
     }
 
     gameComplete() {
-        if ((mapLocation === 8) && energyCellInstalled && boatRepaired) {
-            gameMessage = 'You successfully escaped in the resque boat';
+        if ((this.mapLocation === 8) && this.energyCellInstalled && this.boatRepaired) {
+            this.gameMessage = 'You successfully escaped in the resque boat';
         } else {
-            gameMessage = 'You cant do that';
+            this.gameMessage = 'You can\'t do that';
         }
     }
 
@@ -197,21 +177,14 @@ class Game {
         this.boardEl.innerHTML = this.map[this.mapLocation].name;
         this.imgEl.src = this.map[this.mapLocation].image;
 
-        if (this.map[this.mapLocation].items) {
+        if (this.map[this.mapLocation].items.length) {
             this.boardEl.innerHTML += '<br>You see a <strong>' + this.map[this.mapLocation].items.join(', ') + '</strong> here.';
         }
-
-        // TODO: fix "You see a 'null' here if I drop an item"
-        // for (let i = 0; i < items.length; i++) {
-        //     if (mapLocation === itemLocations[i]) {
-        //         boardEl.innerHTML += '<br>You see a <strong>' + items[i] + '</strong> here.';
-        //     }
-        // }
 
         this.boardEl.innerHTML += '<br>' + this.gameMessage;
 
         if (this.inventory.length !== 0) {
-            this.boardEl.innerHTML += '<br>You are carrying: ' + inventory.join(', ');
+            this.boardEl.innerHTML += '<br>You are carrying: ' + this.inventory.join(', ');
         }
 
         this.inputEl.value = '';
@@ -220,7 +193,9 @@ class Game {
     playGame() {
         let playersInput = this.inputEl.value.toLowerCase();
 
-        let gameMessage = '';
+        this.gameMessage = '';
+
+        // Action is not global for now (if we ever need it)
         let action = '';
 
         for (let i = 0; i < this.knownActions.length; i++) {
@@ -247,28 +222,28 @@ class Game {
                 if (this.mapLocation >= 3) {
                     this.mapLocation -= 3;
                 } else {
-                    gameMessage = blockedPathMessages[0];
+                    this.gameMessage = blockedPathMessages[0];
                 }
                 break;
             case 'right':
                 if (this.mapLocation % 3 !== 2) {
                     this.mapLocation += 1;
                 } else {
-                    gameMessage = blockedPathMessages[0];
+                    this.gameMessage = blockedPathMessages[0];
                 }
                 break;
             case 'back':
                 if (this.mapLocation < 6) {
                     this.mapLocation += 3;
                 } else {
-                    gameMessage = blockedPathMessages[0];
+                    this.gameMessage = blockedPathMessages[0];
                 }
                 break;
             case 'left':
                 if (this.mapLocation % 3 !== 0) {
                     this.mapLocation -= 1;
                 } else {
-                    gameMessage = blockedPathMessages[0];
+                    this.gameMessage = blockedPathMessages[0];
                 }
                 break;
             case 'take':
@@ -290,7 +265,7 @@ class Game {
                 this.showInventory();
                 break;
             default:
-                gameMessage = 'Unknown input';
+                this.gameMessage = 'Unknown input';
         }
 
         this.render();
