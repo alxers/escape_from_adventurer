@@ -162,7 +162,7 @@ class Game {
 
     gameComplete() {
         if ((this.mapLocation === 8) && this.energyCellInstalled && this.boatRepaired) {
-            this.gameMessage = 'You successfully escaped in the resque boat';
+            this.gameMessage = 'You successfully escaped in the rescue boat';
         } else {
             this.gameMessage = 'You can\'t do that';
         }
@@ -222,28 +222,28 @@ class Game {
                 if (this.mapLocation >= 3) {
                     this.mapLocation -= 3;
                 } else {
-                    this.gameMessage = blockedPathMessages[0];
+                    this.gameMessage = this.blockedPathMessages[0];
                 }
                 break;
             case 'right':
                 if (this.mapLocation % 3 !== 2) {
                     this.mapLocation += 1;
                 } else {
-                    this.gameMessage = blockedPathMessages[0];
+                    this.gameMessage = this.blockedPathMessages[0];
                 }
                 break;
             case 'back':
                 if (this.mapLocation < 6) {
                     this.mapLocation += 3;
                 } else {
-                    this.gameMessage = blockedPathMessages[0];
+                    this.gameMessage = this.blockedPathMessages[0];
                 }
                 break;
             case 'left':
                 if (this.mapLocation % 3 !== 0) {
                     this.mapLocation -= 1;
                 } else {
-                    this.gameMessage = blockedPathMessages[0];
+                    this.gameMessage = this.blockedPathMessages[0];
                 }
                 break;
             case 'take':
