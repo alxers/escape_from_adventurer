@@ -45,6 +45,7 @@ class Game {
 
         ];
 
+        // Create a map with locations
         this.map = this.locationItems.map(function(locItem) {
             let loc = Object.keys(locItem)[0];
             return new Location(loc, locItem[loc])
@@ -122,7 +123,6 @@ class Game {
     }
 
     // TODO: get rid of magic numbers
-    // add real items
     useItem() {
         let inventoryIndex = this.inventory.indexOf(this.item);
 
