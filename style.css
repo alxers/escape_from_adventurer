@@ -1,13 +1,39 @@
-/*TODO: flexbox? */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+}
+
 .wrapper {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 30%;
+    margin: auto;
+    width: 40%;
+    height: 50%;
 }
 
 #ship-image {
-	width: 100%;
+    width: 100%;
     height: auto;
+}
+
+.map-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: center;
+    position: absolute;
+    top: 45%;
+    left: 3%;
+    width: 23%;
+    height: 60%;
+    background: red;
+}
+
+.map-cell {
+    width: 100px;
+    height: 100px;
+    margin: 10px;
 }
