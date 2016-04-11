@@ -19,7 +19,7 @@ body {
     height: auto;
 }
 
-.map-wrapper {
+#map-wrapper {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;

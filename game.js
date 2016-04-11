@@ -80,6 +80,7 @@ class Game {
         this.inputEl = document.getElementById('input');
         this.enterBtnEl = document.getElementById('enterBtn');
         this.imgEl = document.getElementById('ship-image');
+        this.mapEl = document.getElementById('map-wrapper');
 
         // Arrow function to pass correct 'this'
         this.enterBtnEl.addEventListener('click', e => this.playGame(), false);
@@ -174,6 +175,16 @@ class Game {
         this.gameMessage = 'You can type in: ' + this.knownActions.join(', ');
     }
 
+    drawMap() {
+        this.map.map((location) => {
+            let mapCell = document.createElement('div');
+            let text = document.createTextNode(location.name);
+            mapCell.appendChild(text);
+            mapCell.setAttribute('class', 'map-cell');
+            this.mapEl.appendChild(mapCell);
+        });
+    }
+
     render() {
         this.boardEl.innerHTML = this.map[this.mapLocation].name;
         this.imgEl.src = this.map[this.mapLocation].image;
@@ -189,6 +200,7 @@ class Game {
         }
 
         this.inputEl.value = '';
+        this.drawMap();
     }
 
     playGame() {
