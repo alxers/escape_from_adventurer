@@ -176,12 +176,15 @@ class Game {
     }
 
     drawMap() {
+        // clear node
+        while (this.mapEl.firstChild) {
+            this.mapEl.removeChild(this.mapEl.firstChild);
+        }
         this.map.map((location) => {
             let mapCell = document.createElement('div');
+            var t = location.name;
             if (location.name === this.map[this.mapLocation].name) {
-                var t = (`${location.name} (You are here)`);
-            } else {
-                var t = location.name;
+                t = (`${location.name} (You are here)`);
             }
             let text = document.createTextNode(t)
             mapCell.appendChild(text);
