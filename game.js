@@ -178,7 +178,12 @@ class Game {
     drawMap() {
         this.map.map((location) => {
             let mapCell = document.createElement('div');
-            let text = document.createTextNode(location.name);
+            if (location.name === this.map[this.mapLocation].name) {
+                var t = (`${location.name} (You are here)`);
+            } else {
+                var t = location.name;
+            }
+            let text = document.createTextNode(t)
             mapCell.appendChild(text);
             mapCell.setAttribute('class', 'map-cell');
             this.mapEl.appendChild(mapCell);
