@@ -1,3 +1,10 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -33,7 +40,6 @@ body {
 }
 
 .map-cell {
-    width: 100px;
-    height: 100px;
-    margin: 10px;
+    flex: 0 0 33.3333%;
+    min-width: 33.3333%;
 }
