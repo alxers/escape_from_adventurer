@@ -32,14 +32,18 @@ body {
     justify-content: space-around;
     align-content: center;
     position: absolute;
-    top: 45%;
+    top: 35%;
     left: 3%;
     width: 23%;
-    height: 60%;
-    background: red;
+    height: 35%;
+    background: rgb(243, 243, 243);
+    box-shadow: 10px 10px 39px 0px rgba(0,0,0,0.53);
 }
 
 .map-cell {
     flex: 0 0 33.3333%;
     min-width: 33.3333%;
+    height: 50px;
+    text-align: center;
+    padding: 5px;
 }
