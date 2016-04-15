@@ -47,3 +47,7 @@ body {
     text-align: center;
     padding: 5px;
 }
+
+.map-cell-is-active {
+    background: red;
+}

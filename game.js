@@ -182,13 +182,15 @@ class Game {
         }
         this.map.map((location) => {
             let mapCell = document.createElement('div');
+            mapCell.setAttribute('class', 'map-cell');
             var t = location.name;
             if (location.name === this.map[this.mapLocation].name) {
-                t = (`${location.name} (You are here)`);
+                // t = (`${location.name} (You are here)`);
+                mapCell.setAttribute('class', 'map-cell map-cell-is-active');
             }
-            let text = document.createTextNode(t)
+            let text = document.createTextNode(t);
             mapCell.appendChild(text);
-            mapCell.setAttribute('class', 'map-cell');
+            
             this.mapEl.appendChild(mapCell);
         });
     }
