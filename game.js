@@ -53,9 +53,9 @@ class Game {
         });
 
         this.knownActions = [
-            'forward',
+            'up',
             'right',
-            'back',
+            'down',
             'left',
             'take',
             'use rescue boat',
@@ -241,7 +241,7 @@ class Game {
         }
 
         switch (action) {
-            case 'forward':
+            case 'up':
                 if (this.mapLocation >= 3) {
                     this.mapLocation -= 3;
                 } else {
@@ -255,7 +255,7 @@ class Game {
                     this.gameMessage = this.blockedPathMessages[0];
                 }
                 break;
-            case 'back':
+            case 'down':
                 if (this.mapLocation < 6) {
                     this.mapLocation += 3;
                 } else {
