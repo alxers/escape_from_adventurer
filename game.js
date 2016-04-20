@@ -1,6 +1,5 @@
 'use strict'
 
-// TODO: draw map
 class Utils {
     static toSnakeCase(str) {
         return str.toLowerCase().split(' ').join('_');
