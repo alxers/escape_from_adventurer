@@ -116,14 +116,14 @@ class Game {
         this.map[this.mapLocation].items.push(this.inventory[inventoryIndex]);
         this.inventory.splice(inventoryIndex, 1);
       } else {
-            this.gameMessage = 'You cant do that';
+            this.gameMessage = 'You can\'t do that';
       }
     } else {
       this.gameMessage = 'You are not carrying anything';
     }
   }
 
-    // TODO: get rid of magic numbers
+  // TODO: get rid of magic numbers
   useItem() {
     let inventoryIndex = this.inventory.indexOf(this.item);
 
