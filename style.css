@@ -1,52 +1,53 @@
 html {
   box-sizing: border-box;
 }
+
 *, *:before, *:after {
   box-sizing: inherit;
 }
 
 html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    display: flex;
+  display: flex;
 }
 
 .wrapper {
-    margin: auto;
-    width: 40%;
-    height: 50%;
+  margin: auto;
+  width: 40%;
+  height: 50%;
 }
 
 #ship-image {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
 
 #map-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-content: center;
-    position: absolute;
-    top: 35%;
-    left: 3%;
-    width: 23%;
-    height: 35%;
-    box-shadow: 1px 1px 5px -1px rgba(0,0,0,0.53);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: center;
+  position: absolute;
+  top: 35%;
+  left: 3%;
+  width: 23%;
+  height: 35%;
+  box-shadow: 1px 1px 5px -1px rgba(0,0,0,0.53);
 }
 
 .map-cell {
-    flex: 0 0 33.3333%;
-    min-width: 33.3333%;
-    height: 50px;
-    text-align: center;
-    padding: 5px;
+  flex: 0 0 33.3333%;
+  min-width: 33.3333%;
+  height: 50px;
+  text-align: center;
+  padding: 5px;
 }
 
 .map-cell-is-active {
-    border: 2px dashed;
+  border: 2px dashed;
 }
