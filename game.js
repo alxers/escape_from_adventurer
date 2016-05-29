@@ -172,7 +172,6 @@ class Game {
     }
   }
 
-  // Move to Utils?
   showHelpMessage() {
     this.gameMessage = 'You can type in: ' + this.knownActions.join(', ');
   }
